@@ -7,6 +7,7 @@ import WorkPage from './pages/Public/Work';
 import AboutPage from './pages/Public/About';
 import InsightsPage from './pages/Public/Insights';
 import CareersPage from './pages/Public/Careers';
+import ContactPage from './pages/Public/Contact';
 import MissionControl from './pages/Dashboard/MissionControl';
 import ModelRegistry from './pages/Dashboard/ModelRegistry';
 import Infrastructure from './pages/Dashboard/Infrastructure';
@@ -37,6 +38,7 @@ const App: React.FC = () => {
         <Route path="/about" element={<PublicLayout><AboutPage /></PublicLayout>} />
         <Route path="/insights" element={<PublicLayout><InsightsPage /></PublicLayout>} />
         <Route path="/careers" element={<PublicLayout><CareersPage /></PublicLayout>} />
+        <Route path="/contact" element={<PublicLayout><ContactPage /></PublicLayout>} />
         
         {/* Auth Routes */}
         <Route path="/login" element={<Login />} />
