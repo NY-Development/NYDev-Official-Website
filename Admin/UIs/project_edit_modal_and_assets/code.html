@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NYDev Project Edit Modal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#246bf9",
+                        "background-light": "#f5f6f8",
+                        "background-dark": "#0f1623",
+                        "danger": "#ef4444",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-modal {
+            background: rgba(15, 22, 35, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(36, 107, 249, 0.2);
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(36, 107, 249, 0.1);
+        }
+        .glass-input {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.2s ease;
+        }
+        .glass-input:focus {
+            background: rgba(36, 107, 249, 0.05);
+            border-color: #246bf9;
+            box-shadow: 0 0 0 2px rgba(36, 107, 249, 0.2);
+            outline: none;
+        }
+        .neon-dashed {
+            background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='12' ry='12' stroke='%23246BF9FF' stroke-width='2' stroke-dasharray='8%2c 8' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+            border-radius: 0.75rem;
+        }
+        .tag-glow {
+            box-shadow: 0 0 10px rgba(36, 107, 249, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-200 min-h-screen flex items-center justify-center p-6 relative overflow-hidden">
+<!-- Background Content (Simulated Admin Panel) -->
+<div class="absolute inset-0 z-0 opacity-40 pointer-events-none p-8 grid grid-cols-12 gap-6">
+<div class="col-span-3 space-y-4">
+<div class="h-10 w-full bg-primary/10 rounded-lg"></div>
+<div class="h-64 w-full bg-primary/5 rounded-xl"></div>
+<div class="h-40 w-full bg-primary/5 rounded-xl"></div>
+</div>
+<div class="col-span-9 space-y-6">
+<div class="flex justify-between items-center">
+<div class="h-12 w-48 bg-primary/10 rounded-lg"></div>
+<div class="h-10 w-32 bg-primary/20 rounded-lg"></div>
+</div>
+<div class="grid grid-cols-3 gap-6">
+<div class="h-32 bg-primary/5 rounded-xl"></div>
+<div class="h-32 bg-primary/5 rounded-xl"></div>
+<div class="h-32 bg-primary/5 rounded-xl"></div>
+</div>
+<div class="h-96 w-full bg-primary/5 rounded-xl border border-primary/10"></div>
+</div>
+</div>
+<!-- Overlay Backdrop -->
+<div class="fixed inset-0 bg-background-dark/60 backdrop-blur-md z-10"></div>
+<!-- Main Modal -->
+<div class="relative z-20 w-full max-w-4xl glass-modal rounded-xl overflow-hidden animate-in fade-in zoom-in duration-300">
+<!-- Header -->
+<div class="px-8 py-6 border-b border-white/5 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center">
+<span class="material-icons text-primary">edit_note</span>
+</div>
+<div>
+<h1 class="text-2xl font-bold text-white tracking-tight">Quantum AI Platform</h1>
+<p class="text-xs text-slate-400 uppercase tracking-widest mt-0.5">Project ID: NYD-8829</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="px-3 py-1 bg-primary/20 border border-primary/30 text-primary text-xs font-semibold rounded-full flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                    DRAFT
+                </span>
+<button class="text-slate-400 hover:text-white transition-colors">
+<span class="material-icons">close</span>
+</button>
+</div>
+</div>
+<div class="p-8 max-h-[75vh] overflow-y-auto custom-scrollbar">
+<!-- Form Sections -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<!-- Project Info -->
+<div class="space-y-6">
+<div>
+<label class="block text-sm font-medium text-slate-300 mb-2">Project Name</label>
+<input class="w-full glass-input rounded-lg px-4 py-3 text-white" type="text" value="Quantum AI Platform"/>
+</div>
+<div>
+<label class="block text-sm font-medium text-slate-300 mb-2">Client Entity</label>
+<input class="w-full glass-input rounded-lg px-4 py-3 text-white" type="text" value="Aetheris Global Corp"/>
+</div>
+<div>
+<label class="block text-sm font-medium text-slate-300 mb-2">Detailed Description</label>
+<textarea class="w-full glass-input rounded-lg px-4 py-3 text-white resize-none" rows="4">Developing a next-generation neural architecture search engine for autonomous supply chain optimization. Integrated with real-time telemetry from IoT edge nodes.</textarea>
+</div>
+</div>
+<!-- Media Assets -->
+<div class="space-y-6">
+<div>
+<label class="block text-sm font-medium text-slate-300 mb-2">Media Assets</label>
+<div class="neon-dashed p-8 text-center flex flex-col items-center justify-center group cursor-pointer hover:bg-primary/5 transition-colors">
+<span class="material-icons text-primary text-4xl mb-3">cloud_upload</span>
+<p class="text-sm text-slate-300">Drag &amp; drop files here</p>
+<p class="text-xs text-slate-500 mt-1">PNG, JPG or MP4 (Max 50MB)</p>
+</div>
+<div class="mt-4 grid grid-cols-4 gap-3">
+<div class="relative group aspect-square rounded-lg overflow-hidden border border-white/10">
+<img class="w-full h-full object-cover" data-alt="Abstract blue network visualization" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbbJI_c-P4apnISVlMx409JH9mGxPSXj17UUz4nxW-s9Y2dfyj-elE7t3fyhaOGjSp1Zy9DayySeThwXU_ikUPVBHUQ7C113EKpuADqQomPv-It_-qJ1kXQWRXF60Wgf8mzVp8zV3GpXh6XISe-RZLtXMLrV4L5lBAdYi0vFOtrwWEsnxboib327JOh2w-kEw54Pcf4kwjPtSNDdhfnW7GP8dnyRTY4vMZx6LAt5CMiBKuQc-_stgvdCVU1XG0W8sMVuu6ADJAFmdY"/>
+<div class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+<button class="bg-background-dark/80 p-1.5 rounded-full text-danger">
+<span class="material-icons text-sm">delete</span>
+</button>
+</div>
+</div>
+<div class="relative group aspect-square rounded-lg overflow-hidden border border-white/10">
+<img class="w-full h-full object-cover" data-alt="High tech digital interface architecture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQkmoi_y_TQ6ROzheDQITXmrI5CYqg-XSuM7wUBige2U_9RbO7PBFvkrQ63k0_GOmNYggMExl1GcfCSWitilR7S87Wa36Oq8I6MSliekOHkl5inBrDwNMbZ_eZN0ENb2PYqHMjFwakdXDefNk9-uMee7eRW0y1O8ZfaGh3mP1b3vKgIxk_IXcFIs-eOXM-TqopMDeC0pT99v_V7YXNGwFMxjRdI83zlW204biPgba5Klzr61fi9OUoadZb9GTvN35dK3hBzIALGgwj"/>
+<div class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+<button class="bg-background-dark/80 p-1.5 rounded-full text-danger">
+<span class="material-icons text-sm">delete</span>
+</button>
+</div>
+</div>
+<div class="relative group aspect-square rounded-lg overflow-hidden border border-white/10">
+<img class="w-full h-full object-cover" data-alt="Cybersecurity circuit board pattern" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqb7h90DKOm3cGZOr7CYRcd-x1MBVRd5HOfn-jpb1oIhO4d2PrYtRjx7nw86KbnWE8MSQAwEeiT9B6_Wx_vL2JgeShYyJ8SkOVYssHjsKbOlh_9iZZA_2aQ_CkQUjovFIzW0qAGx70tnI8rGckGLW9Nb-qxVmgIaMssJX0WjvufXn6evkns7SbMjnBH6gjl-TN-_xl19362scEOpzKjUvWSEbbMwzq5b2LlGf8sn70H0m_aNWHoY6hLmPUJJP4D4aS59Hu2cBFvVzR"/>
+<div class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+<button class="bg-background-dark/80 p-1.5 rounded-full text-danger">
+<span class="material-icons text-sm">delete</span>
+</button>
+</div>
+</div>
+<div class="aspect-square rounded-lg bg-white/5 border border-dashed border-white/10 flex items-center justify-center cursor-pointer hover:bg-white/10 transition-colors">
+<span class="material-icons text-slate-500">add</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Technology Stack -->
+<div class="mt-10">
+<label class="block text-sm font-medium text-slate-300 mb-4">Technology Stack</label>
+<div class="flex flex-wrap gap-3 mb-4">
+<span class="px-3 py-1.5 bg-primary/20 text-primary border border-primary/40 rounded-lg text-sm font-medium flex items-center gap-2 tag-glow">
+                        React 18
+                        <button class="text-primary/60 hover:text-primary leading-none"><span class="material-icons text-[14px]">close</span></button>
+</span>
+<span class="px-3 py-1.5 bg-primary/20 text-primary border border-primary/40 rounded-lg text-sm font-medium flex items-center gap-2 tag-glow">
+                        Python 3.11
+                        <button class="text-primary/60 hover:text-primary leading-none"><span class="material-icons text-[14px]">close</span></button>
+</span>
+<span class="px-3 py-1.5 bg-primary/20 text-primary border border-primary/40 rounded-lg text-sm font-medium flex items-center gap-2 tag-glow">
+                        PyTorch
+                        <button class="text-primary/60 hover:text-primary leading-none"><span class="material-icons text-[14px]">close</span></button>
+</span>
+<span class="px-3 py-1.5 bg-primary/20 text-primary border border-primary/40 rounded-lg text-sm font-medium flex items-center gap-2 tag-glow">
+                        NVIDIA CUDA
+                        <button class="text-primary/60 hover:text-primary leading-none"><span class="material-icons text-[14px]">close</span></button>
+</span>
+<span class="px-3 py-1.5 bg-primary/20 text-primary border border-primary/40 rounded-lg text-sm font-medium flex items-center gap-2 tag-glow">
+                        PostgreSQL
+                        <button class="text-primary/60 hover:text-primary leading-none"><span class="material-icons text-[14px]">close</span></button>
+</span>
+</div>
+<div class="relative">
+<span class="material-icons absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">search</span>
+<input class="w-full glass-input rounded-lg pl-12 pr-4 py-3 text-white" placeholder="Search technology to add..." type="text"/>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<div class="px-8 py-6 bg-white/5 border-t border-white/5 flex items-center justify-between">
+<div class="flex items-center gap-2 text-slate-400 text-sm">
+<span class="material-icons text-xs">info</span>
+                Last autosaved at 14:22
+            </div>
+<div class="flex items-center gap-4">
+<button class="px-6 py-2.5 rounded-lg border border-danger/30 text-danger font-semibold hover:bg-danger/10 transition-colors">
+                    Discard Changes
+                </button>
+<button class="px-8 py-2.5 rounded-lg bg-primary text-white font-bold shadow-lg shadow-primary/25 hover:bg-primary/90 transition-all active:scale-[0.98]">
+                    Save Changes
+                </button>
+</div>
+</div>
+</div>
+<!-- Scrollbar Styling -->
+<style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(36, 107, 249, 0.3);
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(36, 107, 249, 0.5);
+        }
+    </style>
+</body></html>

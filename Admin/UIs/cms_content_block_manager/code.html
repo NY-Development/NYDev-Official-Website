@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NYDev CMS Content Manager</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "primary": "#246bf9",
+                "background-light": "#f5f6f8",
+                "background-dark": "#0f1623",
+                "surface-dark": "#1a2233",
+                "border-dark": "#2d3748"
+              },
+              fontFamily: {
+                "display": ["Space Grotesk"]
+              },
+              borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .glass-panel {
+            background: rgba(26, 34, 51, 0.7);
+            backdrop-filter: blur(12px);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .neon-glow {
+            box-shadow: 0 0 15px rgba(36, 107, 249, 0.4);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #2d3748;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="w-64 border-r border-border-dark bg-background-light dark:bg-background-dark flex flex-col">
+<div class="p-6 flex items-center gap-3">
+<div class="w-8 h-8 bg-primary rounded flex items-center justify-center">
+<span class="material-icons text-white text-sm">terminal</span>
+</div>
+<span class="text-xl font-bold tracking-tight">NY<span class="text-primary">Dev</span></span>
+</div>
+<nav class="flex-1 px-4 py-4 space-y-1 overflow-y-auto custom-scrollbar">
+<div class="text-[10px] uppercase tracking-widest text-slate-500 mb-2 px-2 font-bold">Content Architecture</div>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary group" href="#">
+<span class="material-icons text-[20px]">dashboard</span>
+<span class="font-medium">All Blocks</span>
+</a>
+<div class="mt-6">
+<div class="text-[10px] uppercase tracking-widest text-slate-500 mb-2 px-2 font-bold">Pages</div>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-white/5 transition-colors group" href="#">
+<div class="flex items-center gap-3">
+<span class="material-icons text-[20px] text-slate-400 group-hover:text-primary transition-colors">home</span>
+<span>Home</span>
+</div>
+<span class="text-[10px] bg-slate-800 px-1.5 py-0.5 rounded text-slate-400">12</span>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-white/5 transition-colors group" href="#">
+<div class="flex items-center gap-3">
+<span class="material-icons text-[20px] text-slate-400 group-hover:text-primary transition-colors">info</span>
+<span>About</span>
+</div>
+<span class="text-[10px] bg-slate-800 px-1.5 py-0.5 rounded text-slate-400">8</span>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-white/5 transition-colors group" href="#">
+<div class="flex items-center gap-3">
+<span class="material-icons text-[20px] text-slate-400 group-hover:text-primary transition-colors">settings_suggest</span>
+<span>Services</span>
+</div>
+<span class="text-[10px] bg-slate-800 px-1.5 py-0.5 rounded text-slate-400">24</span>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-white/5 transition-colors group" href="#">
+<div class="flex items-center gap-3">
+<span class="material-icons text-[20px] text-slate-400 group-hover:text-primary transition-colors">contact_page</span>
+<span>Contact</span>
+</div>
+<span class="text-[10px] bg-slate-800 px-1.5 py-0.5 rounded text-slate-400">5</span>
+</a>
+</div>
+<div class="mt-6">
+<div class="text-[10px] uppercase tracking-widest text-slate-500 mb-2 px-2 font-bold">System</div>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white/5 transition-colors group" href="#">
+<span class="material-icons text-[20px] text-slate-400 group-hover:text-primary transition-colors">history</span>
+<span>Activity Logs</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white/5 transition-colors group" href="#">
+<span class="material-icons text-[20px] text-slate-400 group-hover:text-primary transition-colors">settings</span>
+<span>CMS Settings</span>
+</a>
+</div>
+</nav>
+<div class="p-4 border-t border-border-dark">
+<div class="flex items-center gap-3 p-2 rounded-xl bg-white/5">
+<img class="w-10 h-10 rounded-lg object-cover" data-alt="User profile avatar of a developer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbxPBPdKAjrS0M8GOsTgy_P2CT90SNAABz6MvI0MxxicLMYONLkBEoRv2Fk-JvkubUpI6OAf0AXRVnxqAiSmTwQRT2t14QkVUruD_gKGD5m9KJ-AOX8ER6IL0Ed5FgIr2L9z6LxIZp--OYb5ZhUJqH2Ed63owrK7c62tkDTQFfodI_1GBr8fNEFElm6ywCSJIppViq0dy54Nl5-VNEYrWaUXw1wxFb39A3_HjAzhJ8TDM-qokxauRsT_ujobgmcm7Shuvrxya7lmSs"/>
+<div class="flex-1 overflow-hidden">
+<p class="text-sm font-medium truncate">Alex Rivera</p>
+<p class="text-[10px] text-slate-500 uppercase font-bold">Sr. Admin</p>
+</div>
+<button class="text-slate-400 hover:text-white">
+<span class="material-icons text-sm">logout</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col relative overflow-hidden">
+<!-- Top Bar -->
+<header class="h-20 border-b border-border-dark flex items-center justify-between px-8 bg-background-light dark:bg-background-dark/50 backdrop-blur-md z-10">
+<div class="flex items-center gap-4">
+<h1 class="text-xl font-semibold">Content Manager</h1>
+<div class="h-6 w-[1px] bg-border-dark"></div>
+<div class="flex items-center gap-2 text-xs text-slate-400">
+<span>Projects</span>
+<span class="material-icons text-sm">chevron_right</span>
+<span class="text-slate-200">Production</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 bg-surface-dark border border-border-dark px-3 py-1.5 rounded-lg mr-4">
+<span class="text-xs font-medium">Live Preview</span>
+<button class="w-10 h-5 bg-primary rounded-full relative flex items-center transition-all px-0.5">
+<div class="w-4 h-4 bg-white rounded-full ml-auto shadow-sm"></div>
+</button>
+</div>
+<button class="flex items-center gap-2 bg-primary hover:bg-blue-600 text-white px-5 py-2 rounded-lg font-medium transition-all neon-glow">
+<span class="material-icons text-sm">sync</span>
+                    Sync to Production
+                </button>
+</div>
+</header>
+<!-- Content Grid/Toolbar -->
+<div class="flex-1 overflow-hidden flex flex-col">
+<div class="p-8 pb-4 flex items-center justify-between gap-4">
+<div class="relative flex-1 max-w-xl">
+<span class="material-icons absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">search</span>
+<input class="w-full bg-surface-dark border-border-dark rounded-xl pl-12 pr-4 py-2.5 text-sm focus:ring-primary focus:border-primary transition-all" placeholder="Search by content key or value..." type="text"/>
+</div>
+<div class="flex gap-2">
+<button class="flex items-center gap-2 bg-surface-dark border border-border-dark px-4 py-2.5 rounded-xl text-sm font-medium hover:bg-white/5">
+<span class="material-icons text-sm">filter_list</span>
+                        Filter
+                    </button>
+<button class="flex items-center gap-2 bg-surface-dark border border-border-dark px-4 py-2.5 rounded-xl text-sm font-medium hover:bg-white/5">
+<span class="material-icons text-sm">sort</span>
+                        Latest
+                    </button>
+</div>
+</div>
+<!-- Table -->
+<div class="px-8 flex-1 overflow-y-auto custom-scrollbar">
+<table class="w-full text-left border-separate border-spacing-y-3">
+<thead>
+<tr class="text-slate-500 text-[11px] uppercase tracking-wider font-bold">
+<th class="px-4 pb-2">Content Key</th>
+<th class="px-4 pb-2">Current Value</th>
+<th class="px-4 pb-2">Status</th>
+<th class="px-4 pb-2">Modified</th>
+<th class="px-4 pb-2 text-right">Actions</th>
+</tr>
+</thead>
+<tbody>
+<!-- Row 1 -->
+<tr class="bg-surface-dark/50 hover:bg-surface-dark transition-colors group">
+<td class="px-4 py-4 rounded-l-xl">
+<span class="font-mono text-xs text-primary bg-primary/10 px-2 py-1 rounded">home.hero.title</span>
+</td>
+<td class="px-4 py-4">
+<p class="text-sm text-slate-300 max-w-xs truncate">Building the Future of Enterprise Software with...</p>
+</td>
+<td class="px-4 py-4">
+<div class="flex items-center gap-2 text-emerald-400 text-xs font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                                    Synced
+                                </div>
+</td>
+<td class="px-4 py-4">
+<p class="text-xs text-slate-500">2h ago by Alex R.</p>
+</td>
+<td class="px-4 py-4 rounded-r-xl text-right">
+<button class="bg-primary/10 hover:bg-primary text-primary hover:text-white p-2 rounded-lg transition-all">
+<span class="material-icons text-base">edit</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="bg-surface-dark/50 hover:bg-surface-dark transition-colors group border-l-2 border-amber-500">
+<td class="px-4 py-4 rounded-l-xl">
+<span class="font-mono text-xs text-primary bg-primary/10 px-2 py-1 rounded">home.hero.description</span>
+</td>
+<td class="px-4 py-4">
+<p class="text-sm text-slate-300 max-w-xs truncate">NYDev specializes in building scalable, secure...</p>
+</td>
+<td class="px-4 py-4">
+<div class="flex items-center gap-2 text-amber-400 text-xs font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+                                    Draft
+                                </div>
+</td>
+<td class="px-4 py-4">
+<p class="text-xs text-slate-500">Just now by Alex R.</p>
+</td>
+<td class="px-4 py-4 rounded-r-xl text-right">
+<button class="bg-primary/10 hover:bg-primary text-primary hover:text-white p-2 rounded-lg transition-all">
+<span class="material-icons text-base">edit</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="bg-surface-dark/50 hover:bg-surface-dark transition-colors group">
+<td class="px-4 py-4 rounded-l-xl">
+<span class="font-mono text-xs text-primary bg-primary/10 px-2 py-1 rounded">about.vision.heading</span>
+</td>
+<td class="px-4 py-4">
+<p class="text-sm text-slate-300 max-w-xs truncate">Our Vision for 2025 and Beyond</p>
+</td>
+<td class="px-4 py-4">
+<div class="flex items-center gap-2 text-emerald-400 text-xs font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                                    Synced
+                                </div>
+</td>
+<td class="px-4 py-4">
+<p class="text-xs text-slate-500">1d ago by Sarah K.</p>
+</td>
+<td class="px-4 py-4 rounded-r-xl text-right">
+<button class="bg-primary/10 hover:bg-primary text-primary hover:text-white p-2 rounded-lg transition-all">
+<span class="material-icons text-base">edit</span>
+</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="bg-surface-dark/50 hover:bg-surface-dark transition-colors group">
+<td class="px-4 py-4 rounded-l-xl">
+<span class="font-mono text-xs text-primary bg-primary/10 px-2 py-1 rounded">services.cloud.label</span>
+</td>
+<td class="px-4 py-4">
+<p class="text-sm text-slate-300 max-w-xs truncate">Cloud Native Solutions</p>
+</td>
+<td class="px-4 py-4">
+<div class="flex items-center gap-2 text-emerald-400 text-xs font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                                    Synced
+                                </div>
+</td>
+<td class="px-4 py-4">
+<p class="text-xs text-slate-500">3d ago by John D.</p>
+</td>
+<td class="px-4 py-4 rounded-r-xl text-right">
+<button class="bg-primary/10 hover:bg-primary text-primary hover:text-white p-2 rounded-lg transition-all">
+<span class="material-icons text-base">edit</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Glassmorphic Editor Overlay (Side Panel) -->
+<div class="absolute inset-y-0 right-0 w-[550px] glass-panel shadow-2xl z-20 flex flex-col">
+<div class="p-6 border-b border-white/10 flex items-center justify-between">
+<div>
+<h2 class="text-lg font-bold">Edit Content Block</h2>
+<p class="text-xs text-slate-400 font-mono mt-1">home.hero.description</p>
+</div>
+<button class="p-2 hover:bg-white/10 rounded-full">
+<span class="material-icons">close</span>
+</button>
+</div>
+<div class="flex-1 p-6 overflow-y-auto custom-scrollbar">
+<div class="mb-6">
+<label class="block text-xs font-bold uppercase text-slate-500 mb-2">Metadata</label>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-white/5 p-3 rounded-lg border border-white/5">
+<span class="block text-[10px] text-slate-500 mb-1">Language</span>
+<span class="text-sm font-medium">English (US)</span>
+</div>
+<div class="bg-white/5 p-3 rounded-lg border border-white/5">
+<span class="block text-[10px] text-slate-500 mb-1">Last Deploy</span>
+<span class="text-sm font-medium">Oct 12, 14:20</span>
+</div>
+</div>
+</div>
+<div class="mb-6">
+<div class="flex items-center justify-between mb-2">
+<label class="block text-xs font-bold uppercase text-slate-500">Content Editor</label>
+<div class="flex items-center gap-3">
+<button class="text-slate-400 hover:text-white transition-colors">
+<span class="material-icons text-sm">format_bold</span>
+</button>
+<button class="text-slate-400 hover:text-white transition-colors">
+<span class="material-icons text-sm">format_italic</span>
+</button>
+<button class="text-slate-400 hover:text-white transition-colors">
+<span class="material-icons text-sm">link</span>
+</button>
+<button class="text-slate-400 hover:text-white transition-colors">
+<span class="material-icons text-sm">code</span>
+</button>
+</div>
+</div>
+<div class="bg-black/30 border border-white/10 rounded-xl overflow-hidden focus-within:border-primary transition-all">
+<textarea class="w-full bg-transparent border-none text-slate-200 text-sm focus:ring-0 p-4 resize-none leading-relaxed" placeholder="Write content in Markdown..." rows="12">NYDev specializes in building scalable, secure, and future-proof digital experiences. We partner with forward-thinking enterprises to modernize their legacy systems and architect the cloud infrastructure of tomorrow.
+
+Our team of expert developers and UI/UX designers collaborate to deliver software that doesn't just work—it inspires.</textarea>
+<div class="px-4 py-2 border-t border-white/5 flex justify-between items-center">
+<span class="text-[10px] text-slate-500">Character count: 342</span>
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+<span class="text-[10px] text-primary">Autosaved at 16:45</span>
+</div>
+</div>
+</div>
+</div>
+<div>
+<label class="block text-xs font-bold uppercase text-slate-500 mb-2">Search Engine Preview (SEO)</label>
+<div class="bg-white p-4 rounded-lg">
+<p class="text-[#1a0dab] text-lg hover:underline cursor-pointer">NYDev | Enterprise Software Solutions</p>
+<p class="text-[#006621] text-sm py-0.5">https://nydev.com › about</p>
+<p class="text-[#545454] text-xs">NYDev specializes in building scalable, secure, and future-proof digital experiences. We partner with forward-thinking enterprises...</p>
+</div>
+</div>
+</div>
+<div class="p-6 border-t border-white/10 bg-black/20 flex items-center justify-between">
+<button class="text-slate-400 hover:text-white text-sm font-medium px-4">Discard Changes</button>
+<div class="flex gap-3">
+<button class="bg-white/10 hover:bg-white/20 text-white px-5 py-2.5 rounded-xl text-sm font-medium transition-all">Save as Draft</button>
+<button class="bg-primary hover:bg-blue-600 text-white px-5 py-2.5 rounded-xl text-sm font-medium transition-all shadow-lg">Stage for Release</button>
+</div>
+</div>
+</div>
+<!-- Float Notification -->
+<div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3 bg-slate-900 border border-border-dark px-4 py-3 rounded-2xl shadow-2xl z-50">
+<span class="material-icons text-primary">check_circle</span>
+<span class="text-sm font-medium">Successfully staged 2 items for production sync.</span>
+<button class="ml-4 text-xs font-bold uppercase text-primary hover:underline">View Changes</button>
+</div>
+</main>
+</body></html>

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NYDev Admin Overview Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#246bf9",
+                        "background-light": "#f5f6f8",
+                        "background-dark": "#0f1623",
+                        "card-dark": "#161f30",
+                        "accent-red": "#ef4444",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .glass {
+            background: rgba(22, 31, 48, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .sidebar-item-active {
+            background: rgba(36, 107, 249, 0.1);
+            color: #246bf9;
+            border-right: 3px solid #246bf9;
+        }
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f1623;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display min-h-screen flex">
+<!-- Sidebar -->
+<aside class="w-20 lg:w-64 border-r border-slate-200 dark:border-slate-800 flex flex-col fixed h-full bg-background-light dark:bg-background-dark z-50">
+<div class="p-6 flex items-center gap-3">
+<div class="w-8 h-8 bg-primary rounded flex items-center justify-center">
+<span class="material-icons-round text-white text-sm">terminal</span>
+</div>
+<span class="hidden lg:block font-bold text-xl tracking-tight">NY<span class="text-primary">DEV</span></span>
+</div>
+<nav class="flex-1 mt-4">
+<a class="sidebar-item-active flex items-center px-6 py-4 transition-all duration-200" href="#">
+<span class="material-icons-round">dashboard</span>
+<span class="hidden lg:block ml-4 font-medium">Dashboard</span>
+</a>
+<a class="flex items-center px-6 py-4 text-slate-500 dark:text-slate-400 hover:text-primary transition-all duration-200" href="#">
+<span class="material-icons-round">assignment</span>
+<span class="hidden lg:block ml-4 font-medium">Projects</span>
+</a>
+<a class="flex items-center px-6 py-4 text-slate-500 dark:text-slate-400 hover:text-primary transition-all duration-200" href="#">
+<span class="material-icons-round">groups</span>
+<span class="hidden lg:block ml-4 font-medium">Team</span>
+</a>
+<a class="flex items-center px-6 py-4 text-slate-500 dark:text-slate-400 hover:text-primary transition-all duration-200" href="#">
+<span class="material-icons-round">layers</span>
+<span class="hidden lg:block ml-4 font-medium">Content</span>
+</a>
+<a class="flex items-center px-6 py-4 text-slate-500 dark:text-slate-400 hover:text-primary transition-all duration-200" href="#">
+<span class="material-icons-round">person</span>
+<span class="hidden lg:block ml-4 font-medium">Users</span>
+</a>
+<a class="flex items-center px-6 py-4 text-slate-500 dark:text-slate-400 hover:text-primary transition-all duration-200 mt-auto" href="#">
+<span class="material-icons-round">settings</span>
+<span class="hidden lg:block ml-4 font-medium">Settings</span>
+</a>
+</nav>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 ml-20 lg:ml-64 flex flex-col min-h-screen">
+<!-- Header -->
+<header class="h-20 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-8 bg-background-light/50 dark:bg-background-dark/50 backdrop-blur-md sticky top-0 z-40">
+<div class="flex-1 max-w-2xl relative group">
+<span class="material-icons-round absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors">search</span>
+<input class="w-full bg-slate-100 dark:bg-slate-900 border-none rounded-xl pl-12 pr-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/50 transition-all outline-none" placeholder="Search across NYDev infrastructure..." type="text"/>
+</div>
+<div class="flex items-center gap-6 ml-8">
+<button class="relative p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
+<span class="material-icons-round">notifications</span>
+<span class="absolute top-2 right-2 w-2.5 h-2.5 bg-accent-red rounded-full border-2 border-background-light dark:border-background-dark"></span>
+</button>
+<div class="flex items-center gap-3 pl-6 border-l border-slate-200 dark:border-slate-800">
+<div class="text-right hidden sm:block">
+<p class="text-sm font-semibold leading-none">Alex Rivera</p>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Lead Architect</p>
+</div>
+<div class="w-10 h-10 rounded-xl overflow-hidden bg-primary/10 border border-primary/20">
+<img class="w-full h-full object-cover" data-alt="Portrait of professional male software architect" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdKPAXH5YFdZcX3Zfqt2l7GL67b8K4NzdKhgvKi6fG1P4Axg4yVLB5X7kFoiZztvSLLbmd1eFa5r8ZvR-hhM8RafbmqNKiwpS6Y6E8LuzXbQ98ZvSOhnNICEtdCiTbfA4eSzAbhYVVUP-g0HLi7lGyDj0lcvOGDTKxg1OzAlr9I5RHNSDz0naPbZWyAw3IE-fgto_8uNdje7jG9SG_At3_oA3UbZIaTvjuZLuAv82dZWOosPI_yt5rrrlApmuD9nyNyMTIR1C5GBIB"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Page Content Grid -->
+<div class="p-8 flex flex-col lg:flex-row gap-8 flex-1">
+<!-- Dashboard Main Area -->
+<div class="flex-1 space-y-8">
+<!-- KPI Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+<!-- Card 1 -->
+<div class="glass p-6 rounded-xl hover:translate-y-[-4px] transition-all duration-300">
+<div class="flex items-center justify-between mb-4">
+<div class="p-2 bg-primary/10 rounded-lg">
+<span class="material-icons-round text-primary">analytics</span>
+</div>
+<span class="text-xs font-medium text-emerald-500 flex items-center"><span class="material-icons-round text-[14px]">trending_up</span>+12%</span>
+</div>
+<h3 class="text-slate-500 dark:text-slate-400 text-sm font-medium">Total Projects</h3>
+<p class="text-2xl font-bold mt-1">1,240</p>
+</div>
+<!-- Card 2 -->
+<div class="glass p-6 rounded-xl hover:translate-y-[-4px] transition-all duration-300">
+<div class="flex items-center justify-between mb-4">
+<div class="p-2 bg-primary/10 rounded-lg">
+<span class="material-icons-round text-primary">diversity_3</span>
+</div>
+<span class="text-xs font-medium text-emerald-500 flex items-center"><span class="material-icons-round text-[14px]">trending_up</span>+3</span>
+</div>
+<h3 class="text-slate-500 dark:text-slate-400 text-sm font-medium">Active Teams</h3>
+<p class="text-2xl font-bold mt-1">42</p>
+</div>
+<!-- Card 3 -->
+<div class="glass p-6 rounded-xl hover:translate-y-[-4px] transition-all duration-300">
+<div class="flex items-center justify-between mb-4">
+<div class="p-2 bg-primary/10 rounded-lg">
+<span class="material-icons-round text-primary">view_quilt</span>
+</div>
+<span class="text-xs font-medium text-slate-500 dark:text-slate-400 flex items-center">Stable</span>
+</div>
+<h3 class="text-slate-500 dark:text-slate-400 text-sm font-medium">Content Blocks</h3>
+<p class="text-2xl font-bold mt-1">8,902</p>
+</div>
+<!-- Card 4 -->
+<div class="glass p-6 rounded-xl hover:translate-y-[-4px] transition-all duration-300">
+<div class="flex items-center justify-between mb-4">
+<div class="p-2 bg-primary/10 rounded-lg">
+<span class="material-icons-round text-primary">person_add</span>
+</div>
+<span class="text-xs font-medium text-emerald-500 flex items-center"><span class="material-icons-round text-[14px]">trending_up</span>+0.8k</span>
+</div>
+<h3 class="text-slate-500 dark:text-slate-400 text-sm font-medium">Total Users</h3>
+<p class="text-2xl font-bold mt-1">15.4k</p>
+</div>
+</div>
+<!-- Central Chart View -->
+<div class="glass p-8 rounded-xl min-h-[400px] flex flex-col">
+<div class="flex items-center justify-between mb-8">
+<div>
+<h2 class="text-xl font-bold">Project Lifecycle Analysis</h2>
+<p class="text-sm text-slate-500 dark:text-slate-400">Comparing published vs draft metrics over the last 30 days</p>
+</div>
+<div class="flex gap-4">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-primary"></span>
+<span class="text-xs font-medium">Published</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-slate-600"></span>
+<span class="text-xs font-medium">Drafts</span>
+</div>
+</div>
+</div>
+<!-- Simulated Dual-Axis Chart -->
+<div class="flex-1 flex items-end gap-2 px-2 pb-6 relative group">
+<!-- Chart Lines (Simulated with div gradients and relative positioning) -->
+<div class="absolute inset-0 flex items-end justify-between px-2 opacity-50 pointer-events-none border-b border-slate-700">
+<!-- Placeholder for chart visualization background -->
+</div>
+<!-- Visualizing chart bars as a proxy for the 'dual axis' feeling in simple HTML -->
+<div class="flex-1 h-[60%] bg-primary/20 rounded-t border-t-2 border-primary relative group cursor-pointer hover:bg-primary/30 transition-all">
+<div class="absolute bottom-0 w-1/2 h-full bg-slate-600/20 left-1/4 rounded-t border-t-2 border-slate-500"></div>
+</div>
+<div class="flex-1 h-[45%] bg-primary/20 rounded-t border-t-2 border-primary relative group cursor-pointer hover:bg-primary/30 transition-all">
+<div class="absolute bottom-0 w-1/2 h-[70%] bg-slate-600/20 left-1/4 rounded-t border-t-2 border-slate-500"></div>
+</div>
+<div class="flex-1 h-[80%] bg-primary/20 rounded-t border-t-2 border-primary relative group cursor-pointer hover:bg-primary/30 transition-all">
+<div class="absolute bottom-0 w-1/2 h-[40%] bg-slate-600/20 left-1/4 rounded-t border-t-2 border-slate-500"></div>
+</div>
+<div class="flex-1 h-[55%] bg-primary/20 rounded-t border-t-2 border-primary relative group cursor-pointer hover:bg-primary/30 transition-all">
+<div class="absolute bottom-0 w-1/2 h-[90%] bg-slate-600/20 left-1/4 rounded-t border-t-2 border-slate-500"></div>
+</div>
+<div class="flex-1 h-[70%] bg-primary/20 rounded-t border-t-2 border-primary relative group cursor-pointer hover:bg-primary/30 transition-all">
+<div class="absolute bottom-0 w-1/2 h-[60%] bg-slate-600/20 left-1/4 rounded-t border-t-2 border-slate-500"></div>
+</div>
+<div class="flex-1 h-[95%] bg-primary/20 rounded-t border-t-2 border-primary relative group cursor-pointer hover:bg-primary/30 transition-all">
+<div class="absolute bottom-0 w-1/2 h-[30%] bg-slate-600/20 left-1/4 rounded-t border-t-2 border-slate-500"></div>
+</div>
+<div class="flex-1 h-[40%] bg-primary/20 rounded-t border-t-2 border-primary relative group cursor-pointer hover:bg-primary/30 transition-all">
+<div class="absolute bottom-0 w-1/2 h-[80%] bg-slate-600/20 left-1/4 rounded-t border-t-2 border-slate-500"></div>
+</div>
+<div class="flex-1 h-[65%] bg-primary/20 rounded-t border-t-2 border-primary relative group cursor-pointer hover:bg-primary/30 transition-all">
+<div class="absolute bottom-0 w-1/2 h-[50%] bg-slate-600/20 left-1/4 rounded-t border-t-2 border-slate-500"></div>
+</div>
+</div>
+<div class="flex justify-between mt-4 px-2 text-[10px] text-slate-500 uppercase tracking-widest font-bold">
+<span>WK 1</span>
+<span>WK 2</span>
+<span>WK 3</span>
+<span>WK 4</span>
+<span>WK 5</span>
+<span>WK 6</span>
+<span>WK 7</span>
+<span>WK 8</span>
+</div>
+</div>
+<!-- Recent Activities Table / List -->
+<div class="glass rounded-xl overflow-hidden">
+<div class="p-6 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
+<h2 class="font-bold">Active Deployments</h2>
+<button class="text-xs text-primary hover:underline font-medium">View detailed log</button>
+</div>
+<table class="w-full text-left">
+<thead>
+<tr class="text-xs text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-900/50 uppercase tracking-wider">
+<th class="px-6 py-3 font-semibold">Instance ID</th>
+<th class="px-6 py-3 font-semibold">Status</th>
+<th class="px-6 py-3 font-semibold">Team</th>
+<th class="px-6 py-3 font-semibold">Health</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-200 dark:divide-slate-800">
+<tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 font-medium text-sm">NY-SRV-0892</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded-full bg-emerald-500/10 text-emerald-500 text-[10px] font-bold uppercase">Live</span>
+</td>
+<td class="px-6 py-4 text-sm text-slate-500 dark:text-slate-400">Core Engine</td>
+<td class="px-6 py-4">
+<div class="w-24 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+<div class="bg-emerald-500 h-full w-[98%]"></div>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 font-medium text-sm">NY-SRV-0411</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded-full bg-primary/10 text-primary text-[10px] font-bold uppercase">Syncing</span>
+</td>
+<td class="px-6 py-4 text-sm text-slate-500 dark:text-slate-400">API Gateway</td>
+<td class="px-6 py-4">
+<div class="w-24 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[45%]"></div>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 font-medium text-sm">NY-SRV-0201</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded-full bg-amber-500/10 text-amber-500 text-[10px] font-bold uppercase">Warning</span>
+</td>
+<td class="px-6 py-4 text-sm text-slate-500 dark:text-slate-400">Data Pipeline</td>
+<td class="px-6 py-4">
+<div class="w-24 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+<div class="bg-amber-500 h-full w-[72%]"></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Right Sidebar / Alerts -->
+<aside class="w-full lg:w-80 space-y-6">
+<div class="glass p-6 rounded-xl">
+<div class="flex items-center justify-between mb-6">
+<h2 class="font-bold">System Alerts</h2>
+<span class="bg-accent-red text-white text-[10px] px-2 py-0.5 rounded-full font-bold">4 NEW</span>
+</div>
+<div class="space-y-4">
+<!-- Alert Item -->
+<div class="group p-4 bg-slate-100/50 dark:bg-slate-900/50 rounded-lg border-l-4 border-accent-red hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer">
+<div class="flex justify-between items-start mb-1">
+<p class="text-xs font-bold text-accent-red uppercase tracking-tight">Pending Approval</p>
+<span class="text-[10px] text-slate-500">2m ago</span>
+</div>
+<p class="text-sm font-medium">New User Request: Marcus Aurelius</p>
+<div class="flex gap-2 mt-3">
+<button class="px-3 py-1 bg-primary text-white text-[10px] font-bold rounded hover:brightness-110 transition-all">APPROVE</button>
+<button class="px-3 py-1 bg-slate-200 dark:bg-slate-800 text-[10px] font-bold rounded hover:bg-slate-300 dark:hover:bg-slate-700 transition-all">DECLINE</button>
+</div>
+</div>
+<!-- Alert Item -->
+<div class="group p-4 bg-slate-100/50 dark:bg-slate-900/50 rounded-lg border-l-4 border-amber-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer">
+<div class="flex justify-between items-start mb-1">
+<p class="text-xs font-bold text-amber-500 uppercase tracking-tight">System Notice</p>
+<span class="text-[10px] text-slate-500">45m ago</span>
+</div>
+<p class="text-sm font-medium">API Token Expiry: Production Server-A</p>
+</div>
+<!-- Alert Item -->
+<div class="group p-4 bg-slate-100/50 dark:bg-slate-900/50 rounded-lg border-l-4 border-primary hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer">
+<div class="flex justify-between items-start mb-1">
+<p class="text-xs font-bold text-primary uppercase tracking-tight">Deployment</p>
+<span class="text-[10px] text-slate-500">2h ago</span>
+</div>
+<p class="text-sm font-medium">Project Deployment Pending: Beta-V4</p>
+</div>
+</div>
+<button class="w-full mt-6 py-3 border border-slate-200 dark:border-slate-800 rounded-lg text-xs font-bold text-slate-500 hover:text-primary hover:border-primary transition-all uppercase tracking-widest">
+                        Clear All Notifications
+                    </button>
+</div>
+<div class="glass p-6 rounded-xl overflow-hidden relative">
+<div class="relative z-10">
+<h2 class="font-bold mb-2">Team Velocity</h2>
+<p class="text-3xl font-bold">88%</p>
+<p class="text-xs text-slate-400 mt-1">Productivity is up 12% from last sprint</p>
+<div class="mt-6 w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[88%] shadow-[0_0_10px_rgba(36,107,249,0.5)]"></div>
+</div>
+</div>
+<!-- Decorative element -->
+<div class="absolute -right-4 -bottom-4 w-24 h-24 bg-primary/10 rounded-full blur-2xl"></div>
+</div>
+<div class="glass p-6 rounded-xl">
+<h2 class="font-bold mb-4">Quick Shortcuts</h2>
+<div class="grid grid-cols-2 gap-3">
+<button class="flex flex-col items-center justify-center p-4 bg-slate-100/50 dark:bg-slate-900/50 rounded-lg border border-transparent hover:border-primary transition-all">
+<span class="material-icons-round text-primary mb-2">add_task</span>
+<span class="text-[10px] font-bold uppercase tracking-tight">New Project</span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 bg-slate-100/50 dark:bg-slate-900/50 rounded-lg border border-transparent hover:border-primary transition-all">
+<span class="material-icons-round text-primary mb-2">security</span>
+<span class="text-[10px] font-bold uppercase tracking-tight">Security Log</span>
+</button>
+</div>
+</div>
+</aside>
+</div>
+</main>
+</body></html>

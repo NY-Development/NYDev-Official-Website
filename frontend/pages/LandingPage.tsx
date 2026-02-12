@@ -1,7 +1,23 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { getPublicContent } from '../services/public.service';
 
 const LandingPage: React.FC = () => {
+  const [content, setContent] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    getPublicContent()
+      .then((blocks) =>
+        setContent(
+          blocks.reduce((acc, block) => {
+            acc[block.key] = block.value;
+            return acc;
+          }, {} as Record<string, string>)
+        )
+      )
+      .catch(() => setContent({}));
+  }, []);
+
   return (
     <div className="min-h-screen bg-white dark:bg-[#050a15] text-slate-900 dark:text-white selection:bg-blue-500/30 transition-colors duration-300">
       {/* Hero Section */}
@@ -17,15 +33,18 @@ const LandingPage: React.FC = () => {
                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-500 opacity-75"></span>
                <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
              </span>
-             Now Accepting New Projects for Q4
+             {content['home.hero.badge'] || 'Now Accepting New Projects for Q4'}
           </div>
 
           <h1 className="text-5xl md:text-8xl font-bold leading-[1.1] tracking-tight mb-8 max-w-5xl bg-gradient-to-b from-slate-900 to-slate-600 dark:from-white dark:to-slate-400 bg-clip-text text-transparent">
-            NY Development <br className="hidden md:block" /> Turning Problems into Products
+            {(content['home.hero.title'] || 'NY Development').split('|')[0]}{' '}
+            <br className="hidden md:block" />
+            {(content['home.hero.title'] || 'NY Development | Turning Problems into Products').split('|')[1] || 'Turning Problems into Products'}
           </h1>
 
           <p className="text-slate-600 dark:text-slate-400 text-lg md:text-xl max-w-2xl leading-relaxed mb-12 font-light">
-            We partner with ambitious teams to turn complex operational pain into shipping software. From strategy to build to scale, we deliver products that earn revenue and loyalty.
+            {content['home.hero.description'] ||
+              'We partner with ambitious teams to turn complex operational pain into shipping software. From strategy to build to scale, we deliver products that earn revenue and loyalty.'}
           </p>
 
           <div className="flex flex-col sm:flex-row items-center gap-4 mb-24">

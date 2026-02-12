@@ -1,7 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { getPublicTeam } from '../../services/public.service';
 
 const AboutPage: React.FC = () => {
+  const [team, setTeam] = useState<{ id: string; name: string; title: string; avatarUrl: string }[]>([]);
+
+  useEffect(() => {
+    getPublicTeam().then(setTeam).catch(() => setTeam([]));
+  }, []);
+
   return (
     <div className="min-h-screen bg-white dark:bg-[#050a15] text-slate-900 dark:text-white font-sans selection:bg-blue-500/30 transition-colors duration-300">
       <main className="pt-32 pb-20 px-6">
@@ -82,17 +89,16 @@ const AboutPage: React.FC = () => {
               <p className="text-slate-500 text-sm">Meet the minds building the infrastructure of the future.</p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {[
-                { name: 'Alex Chen', role: 'Chief Executive Officer', img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=500&fit=crop' },
-                { name: 'Sarah Jenkins', role: 'Chief Technology Officer', img: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=500&fit=crop' },
-                { name: 'Marcus Thorne', role: 'Lead AI Engineer', img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=500&fit=crop' },
-                { name: 'Emily Zhao', role: 'Head of Product', img: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=500&fit=crop' }
-              ].map((member, i) => (
-                <div key={i} className="group relative overflow-hidden rounded-2xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10">
-                  <img src={member.img} alt={member.name} className="w-full aspect-[4/5] object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
+              {team.map((member) => (
+                <div key={member.id} className="group relative overflow-hidden rounded-2xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10">
+                  <img
+                    src={member.avatarUrl || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=500&fit=crop'}
+                    alt={member.name}
+                    className="w-full aspect-[4/5] object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                  />
                   <div className="p-4 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md">
                     <h4 className="font-bold text-sm text-slate-900 dark:text-white">{member.name}</h4>
-                    <p className="text-blue-600 dark:text-blue-400 text-[10px] uppercase tracking-wider mt-1">{member.role}</p>
+                    <p className="text-blue-600 dark:text-blue-400 text-[10px] uppercase tracking-wider mt-1">{member.title}</p>
                   </div>
                 </div>
               ))}

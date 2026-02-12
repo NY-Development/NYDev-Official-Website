@@ -1,83 +1,42 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { getPublicProjects } from '../../services/public.service';
 
 const WorkPage: React.FC = () => {
   const [selectedProject, setSelectedProject] = useState<any>(null);
   const [activeFilter, setActiveFilter] = useState('All');
 
-  const categories = ['All', 'Artificial Intelligence', 'Cloud Architecture', 'FinTech', 'Blockchain'];
+  const [projects, setProjects] = useState<any[]>([]);
 
-  const projects = [
-    {
-      id: 1,
-      title: 'Nexus Stream Architecture',
-      category: 'FinTech',
-      stat: '99.99% UPTIME ACHIEVED',
-      desc: 'Re-engineering legacy financial pipelines for real-time fraud detection using distributed event streaming.',
-      fullDesc: 'Our team architected a multi-region Kafka cluster capable of processing 100k+ events per second. The system integrates custom Rust consumers to validate transactions against ML models in under 5ms, ensuring zero-latency fraud prevention for tier-1 banks.',
-      tags: ['Kafka', 'Rust', 'TensorFlow'],
-      link: 'https://github.com/nydev/nexus-stream',
-      image: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=1200&q=80'
-    },
-    {
-      id: 2,
-      title: 'Cognitive Diagnostic AI',
-      category: 'Artificial Intelligence',
-      stat: '3X FASTER INFERENCE',
-      desc: 'Diagnostic assistant reducing false positives in radiology scans through computer vision optimization.',
-      fullDesc: 'By implementing TensorRT optimization on custom PyTorch architectures, we achieved a 300% throughput increase on standard medical imaging hardware. This allows clinics to process diagnostic data locally without high-cost cloud GPU overhead.',
-      tags: ['Python', 'PyTorch', 'React'],
-      link: '#',
-      image: 'https://images.unsplash.com/photo-1551288049-bbbda536339a?auto=format&fit=crop&w=1200&q=80'
-    },
-    {
-      id: 3,
-      title: 'Edge Compute Network',
-      category: 'Cloud Architecture',
-      stat: '-40% LATENCY GLOBALLY',
-      desc: 'Distributed content delivery network architecture for ultra-low latency gaming applications.',
-      fullDesc: 'We deployed a global mesh of Go-based edge nodes that handle state synchronization for multiplayer gaming. This reduced average global latency by 40ms, directly impacting player retention for our flagship gaming client.',
-      tags: ['Go', 'Kubernetes', 'AWS Lambda'],
-      link: '#',
-      image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80'
-    },
-    {
-      id: 4,
-      title: 'Quant Ledger Protocol',
-      category: 'Blockchain',
-      stat: 'ZERO DOWNTIME MIGRATION',
-      desc: 'Smart contract auditing and layer-2 scaling solution for a major decentralized exchange.',
-      fullDesc: 'Our engineers audited 150+ smart contracts and implemented a ZK-Rollup scaling strategy that reduced gas fees by 95% while maintaining the security of the Ethereum mainnet.',
-      tags: ['Solidity', 'Node.js', 'Web3.js'],
-      link: '#',
-      image: 'https://images.unsplash.com/photo-1639322537228-f710d846310a?auto=format&fit=crop&w=1200&q=80'
-    },
-    {
-      id: 5,
-      title: 'SecureVault Enterprise',
-      category: 'Blockchain', // Categorized for filtering
-      stat: 'MILITARY-GRADE ENCRYPTION',
-      desc: 'End-to-end encrypted communication platform for government agencies requiring absolute privacy.',
-      fullDesc: 'Implementing the Signal Protocol at an enterprise scale, we built a zero-knowledge communication suite. All metadata is stripped, and keys are managed solely by the end-users hardware security modules.',
-      tags: ['C++', 'Signal Protocol', 'Docker'],
-      link: '#',
-      image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80'
-    },
-    {
-      id: 6,
-      title: 'SmartGrid Energy',
-      category: 'Cloud Architecture', // Categorized for filtering
-      stat: '+200% SCALABILITY',
-      desc: 'IoT fleet management system for renewable energy grids handling millions of concurrent sensors.',
-      fullDesc: 'We utilized Elixir and the Phoenix framework to maintain 2 million simultaneous MQTT connections. This allows for real-time load balancing across regional green-energy grids during peak demand.',
-      tags: ['Elixir', 'TimescaleDB', 'MQTT'],
-      link: '#',
-      image: 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=1200&q=80'
-    }
-  ];
+  useEffect(() => {
+    getPublicProjects()
+      .then((data) =>
+        setProjects(
+          data.map((project) => ({
+            id: project.id,
+            title: project.name,
+            category: project.technologies[0] || 'Product',
+            stat: project.status === 'published' ? 'LIVE PRODUCT' : 'IN DEVELOPMENT',
+            desc: project.description,
+            fullDesc: project.description,
+            tags: project.technologies,
+            link: '#',
+            image:
+              project.assets?.[0]?.url ||
+              'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=1200&q=80',
+          }))
+        )
+      )
+      .catch(() => setProjects([]));
+  }, []);
 
-  const filteredProjects = activeFilter === 'All' 
-    ? projects 
-    : projects.filter(p => p.category === activeFilter);
+  const categories = useMemo(
+    () => ['All', ...Array.from(new Set(projects.map((project) => project.category)))],
+    [projects]
+  );
+
+  const filteredProjects = activeFilter === 'All'
+    ? projects
+    : projects.filter((project) => project.category === activeFilter);
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-[#050a15] text-slate-900 dark:text-white transition-colors duration-300 font-sans selection:bg-blue-500/30">
