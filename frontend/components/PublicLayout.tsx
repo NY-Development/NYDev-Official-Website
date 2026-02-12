@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { Instagram, Linkedin, Github } from 'lucide-react';
 
 const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isDark, setIsDark] = useState(() => {
@@ -140,7 +141,7 @@ const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => 
                   {isDark ? 'Light Mode' : 'Dark Mode'}
                 </button>
                 <Link
-                  to="/login"
+                  to="/contact"
                   onClick={closeMobileMenu}
                   className="flex-1 h-11 rounded-xl bg-primary text-white text-xs font-bold uppercase tracking-[0.2em] flex items-center justify-center shadow-neon-blue"
                 >
@@ -175,9 +176,10 @@ const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => 
                <div>
                  <h4 className="text-slate-900 dark:text-white text-xs font-bold uppercase tracking-widest mb-6">Network</h4>
                  <ul className="space-y-4 text-slate-500 dark:text-slate-400 text-sm">
-                   <li><a href="https://github.com/nydev" className="hover:text-primary transition-colors">GitHub</a></li>
-                   <li><a href="https://linkedin.com/company/nydev" className="hover:text-primary transition-colors">LinkedIn</a></li>
-                   <li><a href="https://twitter.com/nydev" className="hover:text-primary transition-colors">Twitter</a></li>
+                  {/* To add icons from lucide-react */}
+                   <li className="flex items-center gap-2"><Github className="w-4 h-4" /> <a href="https://github.com/NY-Development" className="hover:text-primary transition-colors">GitHub</a></li>
+                   <li className="flex items-center gap-2"><Linkedin className="w-4 h-4" /> <a href="https://www.linkedin.com/in/nydev-company-43827a399/" className="hover:text-primary transition-colors">LinkedIn</a></li>
+                   <li className="flex items-center gap-2"><Instagram className="w-4 h-4" /> <a href="https://www.instagram.com/nydevofficial" className="hover:text-primary transition-colors">Instagram</a></li>
                  </ul>
                </div>
                <div>
