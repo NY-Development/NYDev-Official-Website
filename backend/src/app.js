@@ -3,6 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
+import { connectDB } from './config/db.js'; // Ensure this is imported
 import authRoutes from './routes/auth.js';
 import userRoutes from './routes/users.js';
 import adminProjectRoutes from './routes/admin.projects.js';
@@ -18,7 +19,20 @@ import errorHandler from './middleware/errorHandler.js';
 
 const app = express();
 
+// --- 1. DATABASE GUARD MIDDLEWARE ---
+// This prevents the 500 error caused by Mongoose buffering timeouts
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (err) {
+    console.error("DB Guard Error:", err.message);
+    res.status(503).json({ error: "Database connection failed" });
+  }
+});
+
 app.use(helmet());
+
 const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:5173",
@@ -27,9 +41,7 @@ const allowedOrigins = [
 
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow requests with no origin (like mobile apps or Postman)
     if (!origin) return callback(null, true);
-
     if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
@@ -38,12 +50,16 @@ app.use(cors({
   },
   credentials: true,
 }));
+
 app.use(express.json());
 app.use(cookieParser());
+
 if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
 
-app.get('/', (req, res) => res.send('NYDev Backend running'));
+// ROOT ROUTE
+app.get('/', (req, res) => res.send('NYDev Backend is Online ✅'));
 
+// API ROUTES
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/admin/projects', adminProjectRoutes);
