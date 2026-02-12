@@ -21,11 +21,11 @@ const LandingPage: React.FC = () => {
           </div>
 
           <h1 className="text-5xl md:text-8xl font-bold leading-[1.1] tracking-tight mb-8 max-w-5xl bg-gradient-to-b from-slate-900 to-slate-600 dark:from-white dark:to-slate-400 bg-clip-text text-transparent">
-            Engineering the Future <br className="hidden md:block" /> of Digital Systems
+            NY Development <br className="hidden md:block" /> Turning Problems into Products
           </h1>
 
           <p className="text-slate-600 dark:text-slate-400 text-lg md:text-xl max-w-2xl leading-relaxed mb-12 font-light">
-            We build scalable AI solutions and high-performance web applications for forward-thinking enterprises. Precision architecture meets cutting-edge intelligence.
+            We partner with ambitious teams to turn complex operational pain into shipping software. From strategy to build to scale, we deliver products that earn revenue and loyalty.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center gap-4 mb-24">
@@ -55,8 +55,8 @@ const LandingPage: React.FC = () => {
         <section className="max-w-7xl mx-auto py-32">
           <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-12 gap-4">
             <div className="text-center md:text-left">
-              <h2 className="text-3xl font-bold mb-2">Core Capabilities</h2>
-              <p className="text-slate-500 text-sm">Specialized engineering for the next generation of digital products.</p>
+              <h2 className="text-3xl font-bold mb-2">Product-First Engineering</h2>
+              <p className="text-slate-500 text-sm">We move from problem discovery to product delivery with senior, hands-on teams.</p>
             </div>
             <Link to="/services" className="text-blue-600 dark:text-blue-500 text-xs font-bold uppercase tracking-widest flex items-center gap-2 hover:gap-3 transition-all">
               View all services <span className="material-symbols-outlined !text-sm">arrow_forward</span>
@@ -65,10 +65,10 @@ const LandingPage: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { title: 'Artificial Intelligence', desc: 'LLM integration, predictive modeling, and fine-tuning for custom enterprise solutions.', icon: 'data_object' },
-              { title: 'Web Engineering', desc: 'Next.js & React scalable architectures built for speed, SEO, and global performance.', icon: 'terminal' },
-              { title: 'Cloud Infrastructure', desc: 'Serverless and edge computing architectures that scale automatically with demand.', icon: 'settings_input_antenna' },
-              { title: 'Mobile Development', desc: 'Cross-platform native experiences using React Native and Flutter for iOS and Android.', icon: 'stay_current_portrait' },
+              { title: 'Problem Discovery', desc: 'Rapid alignment workshops to define outcomes, constraints, and the smartest product path.', icon: 'search' },
+              { title: 'Product Design', desc: 'UX flows and prototypes that translate user pain into measurable product value.', icon: 'draw' },
+              { title: 'Full-Stack Build', desc: 'React, Node, and cloud-native delivery with clean architecture and fast iteration.', icon: 'terminal' },
+              { title: 'AI & Automation', desc: 'LLM-powered workflows and intelligent automation that remove bottlenecks.', icon: 'data_object' },
             ].map((cap, i) => (
               <div key={i} className="group p-8 rounded-2xl bg-slate-50 dark:bg-white/[0.03] border border-slate-200 dark:border-white/5 hover:border-blue-600/50 hover:bg-white dark:hover:bg-white/[0.05] transition-all duration-500 shadow-sm hover:shadow-xl">
                 <div className="size-12 rounded-lg bg-blue-600/10 flex items-center justify-center text-blue-600 dark:text-blue-500 mb-6 transition-transform group-hover:scale-110">
@@ -85,15 +85,15 @@ const LandingPage: React.FC = () => {
         <section className="max-w-7xl mx-auto py-20 px-8 rounded-3xl bg-slate-50 dark:bg-white/[0.02] border border-slate-200 dark:border-white/5 relative overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="space-y-8">
-              <h2 className="text-4xl font-bold tracking-tight">Optimized for Speed and <br />Scalability</h2>
+              <h2 className="text-4xl font-bold tracking-tight">From Problem to Product, <br />Fast and Reliable</h2>
               <p className="text-slate-600 dark:text-slate-400 leading-relaxed max-w-lg">
-                Our proprietary development framework ensures your applications are production-ready from day one. We prioritize clean code, automated testing, and CI/CD pipelines.
+                Our delivery model keeps risk low and momentum high. We prioritize clear milestones, clean code, and production readiness from the first sprint.
               </p>
               <ul className="space-y-4">
                 {[
-                  '99.9% Uptime SLA',
-                  'Global Edge Caching',
-                  'Automated Security Audits'
+                  'Discovery to MVP in weeks',
+                  'Senior engineers on every build',
+                  'Security and performance baked in'
                 ].map((item) => (
                   <li key={item} className="flex items-center gap-3 text-sm font-medium">
                     <span className="material-symbols-outlined text-blue-600 dark:text-blue-500 !text-lg">check_circle</span>
