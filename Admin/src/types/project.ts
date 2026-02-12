@@ -2,6 +2,8 @@ export type ProjectStatus = 'draft' | 'published' | 'archived';
 export type ProjectDelivery = 'pending' | 'testing' | 'done';
 
 export interface Project {
+  slug: any;
+  technologies: any;
   id: string;
   title: string;
   desc: string;

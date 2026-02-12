@@ -46,6 +46,8 @@ const emptyForm: Project = {
   isDone: 'pending',
   createdAt: '',
   updatedAt: '',
+  slug: undefined,
+  technologies: undefined
 };
 
 const ProjectsPage: React.FC = () => {
