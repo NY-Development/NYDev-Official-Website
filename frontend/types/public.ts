@@ -1,19 +1,21 @@
 export interface PublicProject {
   id: string;
-  name: string;
-  slug: string;
-  description: string;
-  client: string;
-  technologies: string[];
-  status: string;
-  assets: { url: string; type: string }[];
+  title: string;
+  desc: string;
+  image: string;
+  link: string;
+  techTags: string[];
+  category: string[];
+  isDone: string;
 }
 
 export interface PublicTeamMember {
   id: string;
   name: string;
-  title: string;
-  avatarUrl: string;
+  role: string;
+  image: string;
+  desc: string;
+  links: Record<string, string>;
 }
 
 export interface PublicContentBlock {

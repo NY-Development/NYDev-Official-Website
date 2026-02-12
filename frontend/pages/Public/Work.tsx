@@ -13,15 +13,19 @@ const WorkPage: React.FC = () => {
         setProjects(
           data.map((project) => ({
             id: project.id,
-            title: project.name,
-            category: project.technologies[0] || 'Product',
-            stat: project.status === 'published' ? 'LIVE PRODUCT' : 'IN DEVELOPMENT',
-            desc: project.description,
-            fullDesc: project.description,
-            tags: project.technologies,
-            link: '#',
+            title: project.title,
+            category: project.category?.[0] || 'Product',
+            stat: project.isDone === 'done'
+              ? 'LIVE PRODUCT'
+              : project.isDone === 'testing'
+                ? 'IN TESTING'
+                : 'IN DEVELOPMENT',
+            desc: project.desc,
+            fullDesc: project.desc,
+            tags: project.techTags || [],
+            link: project.link || '#',
             image:
-              project.assets?.[0]?.url ||
+              project.image ||
               'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=1200&q=80',
           }))
         )

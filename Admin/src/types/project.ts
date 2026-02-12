@@ -1,20 +1,16 @@
 export type ProjectStatus = 'draft' | 'published' | 'archived';
-
-export interface ProjectAsset {
-  id: string;
-  url: string;
-  type: 'image' | 'video';
-}
+export type ProjectDelivery = 'pending' | 'testing' | 'done';
 
 export interface Project {
   id: string;
-  name: string;
-  slug: string;
-  description: string;
-  client: string;
-  technologies: string[];
-  status: ProjectStatus;
-  assets: ProjectAsset[];
+  title: string;
+  desc: string;
+  image: string;
+  link: string;
+  techTags: string[];
+  category: string[];
+  isDone: ProjectDelivery;
+  status?: ProjectStatus;
   createdAt: string;
   updatedAt: string;
 }

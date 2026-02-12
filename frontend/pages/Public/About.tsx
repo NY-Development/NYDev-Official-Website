@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { getPublicTeam } from '../../services/public.service';
 
 const AboutPage: React.FC = () => {
-  const [team, setTeam] = useState<{ id: string; name: string; title: string; avatarUrl: string }[]>([]);
+  const [team, setTeam] = useState<{ id: string; name: string; role: string; image: string }[]>([]);
 
   useEffect(() => {
     getPublicTeam().then(setTeam).catch(() => setTeam([]));
@@ -92,13 +92,13 @@ const AboutPage: React.FC = () => {
               {team.map((member) => (
                 <div key={member.id} className="group relative overflow-hidden rounded-2xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10">
                   <img
-                    src={member.avatarUrl || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=500&fit=crop'}
+                    src={member.image || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=500&fit=crop'}
                     alt={member.name}
                     className="w-full aspect-[4/5] object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
                   />
                   <div className="p-4 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md">
                     <h4 className="font-bold text-sm text-slate-900 dark:text-white">{member.name}</h4>
-                    <p className="text-blue-600 dark:text-blue-400 text-[10px] uppercase tracking-wider mt-1">{member.title}</p>
+                    <p className="text-blue-600 dark:text-blue-400 text-[10px] uppercase tracking-wider mt-1">{member.role}</p>
                   </div>
                 </div>
               ))}

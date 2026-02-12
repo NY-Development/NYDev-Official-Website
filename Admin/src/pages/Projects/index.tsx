@@ -1,65 +1,141 @@
 import React, { useEffect, useState } from 'react';
 import DataTable from '../../components/tables/DataTable';
 import Modal from '../../components/modals/Modal';
-import FileUpload from '../../components/forms/FileUpload';
 import TagSelector from '../../components/forms/TagSelector';
+import FileUpload from '../../components/forms/FileUpload';
 import Button from '../../components/ui/Button';
 import type { Project } from '../../types/project';
-import { getProjects, toggleProjectStatus } from '../../services/project.service';
+import { createProject, getProjects, updateProject } from '../../services/project.service';
+import { uploadAsset } from '../../services/upload.service';
 
-const techOptions = ['React', 'Next.js', 'NodeJS', 'GraphQL', 'AWS', 'Python', 'Tailwind', 'Vue 3', 'Redis'];
+const techOptions = [
+  'React',
+  'Next.js',
+  'Node.js',
+  'Express.js',
+  'Nestjs',
+  'MongoDB',
+  'PostgreSQL',
+  'Django',
+  'Python',
+  'TypeScript',
+  'Tailwind CSS',
+  'Tailwindcss',
+  'ChakraUI',
+  'Framer Motion',
+  'Google OAuth',
+];
+
+const categoryOptions = [
+  'Web Development',
+  'Backend & API',
+  'Software Solutions',
+  'Mobile App',
+  'UI/UX Design',
+  'Full Stack Development',
+];
+
+const emptyForm: Project = {
+  id: '',
+  title: '',
+  desc: '',
+  image: '',
+  link: '',
+  techTags: [],
+  category: [],
+  isDone: 'pending',
+  createdAt: '',
+  updatedAt: '',
+};
 
 const ProjectsPage: React.FC = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [selected, setSelected] = useState<Project | null>(null);
-  const [tags, setTags] = useState<string[]>([]);
+  const [form, setForm] = useState<Project>(emptyForm);
+  const [open, setOpen] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     getProjects().then(setProjects).catch(() => setProjects([]));
   }, []);
 
-  useEffect(() => {
-    if (selected) {
-      setTags(selected.technologies || []);
-    }
-  }, [selected]);
+  const openCreate = () => {
+    setSelected(null);
+    setForm({ ...emptyForm, id: '' });
+    setOpen(true);
+  };
 
-  const handleStatusToggle = async (project: Project) => {
-    const nextStatus = project.status === 'published' ? 'draft' : 'published';
+  const openEdit = (project: Project) => {
+    setSelected(project);
+    setForm({ ...project });
+    setOpen(true);
+  };
+
+  const closeModal = () => {
+    setOpen(false);
+    setSelected(null);
+  };
+
+  const handleSave = async () => {
     try {
-      const updated = await toggleProjectStatus(project.id, nextStatus);
-      setProjects((prev) => prev.map((item) => (item.id === updated.id ? updated : item)));
+      if (selected) {
+        const updated = await updateProject(selected.id, form);
+        setProjects((prev) => prev.map((item) => (item.id === updated.id ? updated : item)));
+      } else {
+        const created = await createProject(form);
+        setProjects((prev) => [created, ...prev]);
+      }
+      closeModal();
     } catch (error) {
       return;
     }
   };
 
+  const handleUpload = async (files: FileList | null) => {
+    if (!files || files.length === 0) return;
+    setUploading(true);
+    try {
+      const result = await uploadAsset(files[0]);
+      setForm((prev) => ({ ...prev, image: result.url }));
+    } catch (error) {
+      return;
+    } finally {
+      setUploading(false);
+    }
+  };
+
   const columns = [
     {
-      key: 'name',
+      key: 'title',
       header: 'Project Name',
       render: (row: Project) => (
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary/30 to-purple-500/30 flex items-center justify-center border border-white/10">
             <span className="material-icons text-primary">auto_fix_high</span>
           </div>
-          <span className="font-semibold text-slate-100">{row.name}</span>
+          <span className="font-semibold text-slate-100">{row.title}</span>
         </div>
       ),
     },
     {
-      key: 'slug',
-      header: 'Slug',
+      key: 'category',
+      header: 'Category',
       render: (row: Project) => (
-        <code className="text-xs px-2 py-1 bg-white/5 rounded text-slate-400">{row.slug}</code>
+        <div className="flex flex-wrap gap-2">
+          {(row.category || []).map((item) => (
+            <span key={item} className="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-tighter bg-white/5 text-slate-300 border border-white/10 rounded-full">
+              {item}
+            </span>
+          ))}
+        </div>
       ),
     },
     {
-      key: 'tech',
+      key: 'techTags',
       header: 'Technologies',
       render: (row: Project) => (
         <div className="flex flex-wrap gap-2">
-          {row.technologies.map((tech) => (
+          {row.techTags.map((tech) => (
             <span key={tech} className="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-tighter bg-primary/10 text-primary border border-primary/30 rounded-full">
               {tech}
             </span>
@@ -68,19 +144,18 @@ const ProjectsPage: React.FC = () => {
       ),
     },
     {
-      key: 'status',
-      header: 'Status',
+      key: 'isDone',
+      header: 'Delivery',
       render: (row: Project) => (
-        <label className="relative inline-flex items-center cursor-pointer group">
-          <input
-            checked={row.status === 'published'}
-            onChange={() => handleStatusToggle(row)}
-            className="sr-only peer"
-            type="checkbox"
-          />
-          <div className="w-11 h-6 bg-slate-700 rounded-full peer peer-checked:after:translate-x-full after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-          <span className="ml-3 text-xs font-medium text-slate-400">{row.status}</span>
-        </label>
+        <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border ${
+          row.isDone === 'done'
+            ? 'bg-emerald-500/10 text-emerald-300 border-emerald-500/30'
+            : row.isDone === 'testing'
+              ? 'bg-amber-500/10 text-amber-300 border-amber-500/30'
+              : 'bg-slate-500/10 text-slate-300 border-slate-500/30'
+        }`}>
+          {row.isDone}
+        </span>
       ),
     },
     {
@@ -89,7 +164,7 @@ const ProjectsPage: React.FC = () => {
       align: 'right' as const,
       render: (row: Project) => (
         <div className="flex items-center justify-end gap-2">
-          <button onClick={() => setSelected(row)} className="p-2 hover:bg-primary/20 rounded-lg text-slate-400 hover:text-primary transition-colors">
+          <button onClick={() => openEdit(row)} className="p-2 hover:bg-primary/20 rounded-lg text-slate-400 hover:text-primary transition-colors">
             <span className="material-icons text-sm">edit</span>
           </button>
           <button className="p-2 hover:bg-red-500/20 rounded-lg text-slate-400 hover:text-red-500 transition-colors">
@@ -112,7 +187,7 @@ const ProjectsPage: React.FC = () => {
             <span className="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-sm">search</span>
             <input className="bg-slate-900/60 border border-slate-800 rounded-lg pl-10 pr-4 py-2 text-sm" placeholder="Search projects..." type="text" />
           </div>
-          <Button>+ Add New Project</Button>
+          <Button onClick={openCreate}>+ Add New Project</Button>
         </div>
       </div>
 
@@ -146,18 +221,18 @@ const ProjectsPage: React.FC = () => {
       </div>
 
       <Modal
-        open={Boolean(selected)}
-        title={selected?.name || 'Project'}
-        onClose={() => setSelected(null)}
+        open={open}
+        title={selected ? `Edit ${selected.title}` : 'Add Project'}
+        onClose={closeModal}
         footer={
           <div className="flex items-center justify-between">
             <span className="text-xs text-slate-400 flex items-center gap-2">
               <span className="material-icons text-xs">info</span>
-              Last autosaved at 14:22
+              Review details before saving
             </span>
             <div className="flex items-center gap-4">
-              <Button variant="danger">Discard Changes</Button>
-              <Button>Save Changes</Button>
+              <Button variant="danger" onClick={closeModal}>Discard Changes</Button>
+              <Button onClick={handleSave}>Save Project</Button>
             </div>
           </div>
         }
@@ -166,42 +241,76 @@ const ProjectsPage: React.FC = () => {
           <div className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-2">Project Name</label>
-              <input className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white" defaultValue={selected?.name} />
+              <input
+                value={form.title}
+                onChange={(event) => setForm((prev) => ({ ...prev, title: event.target.value }))}
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white"
+                placeholder="Project title"
+              />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">Client Entity</label>
-              <input className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white" defaultValue={selected?.client} />
+              <label className="block text-sm font-medium text-slate-300 mb-2">Project Link</label>
+              <input
+                value={form.link}
+                onChange={(event) => setForm((prev) => ({ ...prev, link: event.target.value }))}
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white"
+                placeholder="https://example.com"
+              />
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-2">Detailed Description</label>
-              <textarea className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white resize-none" rows={4} defaultValue={selected?.description}></textarea>
+              <textarea
+                value={form.desc}
+                onChange={(event) => setForm((prev) => ({ ...prev, desc: event.target.value }))}
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white resize-none"
+                rows={4}
+                placeholder="Project summary"
+              ></textarea>
             </div>
           </div>
           <div className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">Media Assets</label>
-              <FileUpload onFilesSelected={() => undefined} />
-              <div className="mt-4 grid grid-cols-4 gap-3">
-                {(selected?.assets || []).map((asset) => (
-                  <div key={asset.id} className="relative group aspect-square rounded-lg overflow-hidden border border-white/10">
-                    <img src={asset.url} alt="asset" className="w-full h-full object-cover" />
-                    <div className="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
-                      <button className="bg-[#0f1623]/80 p-1.5 rounded-full text-red-400">
-                        <span className="material-icons text-sm">delete</span>
-                      </button>
-                    </div>
-                  </div>
-                ))}
-                <div className="aspect-square rounded-lg bg-white/5 border border-dashed border-white/10 flex items-center justify-center">
-                  <span className="material-icons text-slate-500">add</span>
-                </div>
+              <label className="block text-sm font-medium text-slate-300 mb-2">Image Path</label>
+              <input
+                value={form.image}
+                onChange={(event) => setForm((prev) => ({ ...prev, image: event.target.value }))}
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white"
+                placeholder="/projects/cover.jpg"
+              />
+              <div className="mt-4">
+                <FileUpload onFilesSelected={handleUpload} accept="image/*" />
+                {uploading && <p className="mt-2 text-xs text-slate-500">Uploading image...</p>}
               </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-2">Delivery Status</label>
+              <select
+                value={form.isDone}
+                onChange={(event) => setForm((prev) => ({ ...prev, isDone: event.target.value as Project['isDone'] }))}
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white"
+              >
+                <option value="pending">In Development</option>
+                <option value="testing">Testing</option>
+                <option value="done">Done</option>
+              </select>
             </div>
           </div>
         </div>
         <div className="mt-10">
           <label className="block text-sm font-medium text-slate-300 mb-4">Technology Stack</label>
-          <TagSelector value={tags} onChange={setTags} options={techOptions} />
+          <TagSelector
+            value={form.techTags}
+            onChange={(value) => setForm((prev) => ({ ...prev, techTags: value }))}
+            options={techOptions}
+          />
+        </div>
+        <div className="mt-10">
+          <label className="block text-sm font-medium text-slate-300 mb-4">Category</label>
+          <TagSelector
+            value={form.category}
+            onChange={(value) => setForm((prev) => ({ ...prev, category: value }))}
+            options={categoryOptions}
+          />
         </div>
       </Modal>
     </div>

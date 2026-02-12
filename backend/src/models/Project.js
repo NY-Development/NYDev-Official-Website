@@ -6,12 +6,19 @@ const assetSchema = new mongoose.Schema({
 }, { _id: false });
 
 const projectSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  slug: { type: String, required: true, unique: true },
+  title: { type: String, required: true },
+  desc: { type: String, default: '' },
+  image: { type: String, default: '' },
+  link: { type: String, default: '' },
+  techTags: [{ type: String }],
+  category: [{ type: String }],
+  isDone: { type: String, enum: ['pending', 'testing', 'done'], default: 'pending' },
+  name: { type: String, default: '' },
+  slug: { type: String, default: '', unique: true, sparse: true },
   description: { type: String, default: '' },
   client: { type: String, default: '' },
   technologies: [{ type: String }],
-  status: { type: String, enum: ['draft', 'published', 'archived'], default: 'draft' },
+  status: { type: String, enum: ['draft', 'published', 'archived'], default: 'published' },
   assets: [assetSchema],
 }, { timestamps: true });
 
