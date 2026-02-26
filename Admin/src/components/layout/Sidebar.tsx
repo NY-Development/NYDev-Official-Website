@@ -27,7 +27,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       >
         <span className="material-icons">close</span>
       </button>
-      <nav className="flex-1 mt-4">
+      <nav className="flex-1 mt-4" aria-label="Admin Navigation">
         {NAV_ITEMS.map((item) => (
           <NavLink
             key={item.name}
@@ -40,9 +40,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                   : 'text-slate-500 hover:text-primary'
               }`
             }
+            aria-label={item.name}
           >
             <span className="material-icons">{item.icon}</span>
-            <span className="hidden lg:block ml-4 font-medium">{item.name}</span>
+            <span className="ml-4 font-medium">{item.name}</span>
           </NavLink>
         ))}
       </nav>

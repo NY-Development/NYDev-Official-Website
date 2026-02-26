@@ -51,6 +51,10 @@ const emptyForm: Project = {
 };
 
 const ProjectsPage: React.FC = () => {
+    const [search, setSearch] = useState('');
+    const [filterTech, setFilterTech] = useState<string | null>(null);
+    const [sortOrder, setSortOrder] = useState<'latest' | 'oldest'>('latest');
+    const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
   const [selected, setSelected] = useState<Project | null>(null);
   const [form, setForm] = useState<Project>(emptyForm);
@@ -115,6 +119,24 @@ const ProjectsPage: React.FC = () => {
   };
 
   const columns = [
+    {
+      key: 'select',
+      header: '',
+      render: (row: Project) => (
+        <input
+          type="checkbox"
+          checked={selectedRows.includes(row.id)}
+          onChange={() => {
+            setSelectedRows((prev) =>
+              prev.includes(row.id)
+                ? prev.filter((id) => id !== row.id)
+                : [...prev, row.id]
+            );
+          }}
+        />
+      ),
+      align: 'center',
+    },
     {
       key: 'title',
       header: 'Project Name',
@@ -185,6 +207,41 @@ const ProjectsPage: React.FC = () => {
     },
   ];
 
+  // Filtering, sorting, and searching
+  const filteredProjects = projects
+    .filter((p) =>
+      (!search || p.title.toLowerCase().includes(search.toLowerCase())) &&
+      (!filterTech || p.techTags.includes(filterTech))
+    )
+    .sort((a, b) => {
+      if (sortOrder === 'latest') {
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      } else {
+        return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+      }
+    });
+
+  // Bulk actions
+  const handleBulkAction = (action: string) => {
+    // Example: implement batch publish/archive/delete
+    // You can call backend APIs here
+    alert(`Bulk action: ${action} on ${selectedRows.length} projects`);
+    setSelectedRows([]);
+  };
+
+  // Export
+  const handleExport = () => {
+    // Simple CSV export
+    const csv = filteredProjects.map(p => `${p.title},${p.link},${p.isDone}`).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'projects.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
@@ -193,41 +250,59 @@ const ProjectsPage: React.FC = () => {
           <p className="text-sm text-slate-500">Control project lifecycles, assets, and status.</p>
         </div>
         <div className="flex items-center gap-3">
-          <div className="relative hidden md:block">
+          <div className="relative w-full max-w-xs">
             <span className="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-sm">search</span>
-            <input className="bg-slate-900/60 border border-slate-800 rounded-lg pl-10 pr-4 py-2 text-sm" placeholder="Search projects..." type="text" />
+            <input
+              className="bg-slate-900/60 border border-slate-800 rounded-lg pl-10 pr-4 py-2 text-sm w-full"
+              placeholder="Search projects..."
+              type="text"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+            />
           </div>
           <Button onClick={openCreate}>+ Add New Project</Button>
+          <button className="px-4 py-2 text-xs font-semibold rounded-lg bg-slate-100 text-slate-900 hover:bg-primary hover:text-white transition-all" onClick={handleExport}>
+            Export CSV
+          </button>
         </div>
       </div>
 
       <div className="glass-card rounded-xl border border-white/5 overflow-hidden">
         <div className="p-4 border-b border-white/10 flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <button className="flex items-center gap-2 px-4 py-2 text-sm bg-white/5 hover:bg-white/10 rounded-lg border border-white/10">
-              <span className="material-icons text-sm">filter_list</span>
-              Filter by Tech
-              <span className="material-icons text-sm">expand_more</span>
-            </button>
-            <button className="flex items-center gap-2 px-4 py-2 text-sm bg-white/5 hover:bg-white/10 rounded-lg border border-white/10">
+            <select
+              className="bg-white/5 border border-white/10 rounded-lg text-xs py-2 px-3"
+              value={filterTech || ''}
+              onChange={e => setFilterTech(e.target.value || null)}
+            >
+              <option value="">All Technologies</option>
+              {techOptions.map(tech => (
+                <option key={tech} value={tech}>{tech}</option>
+              ))}
+            </select>
+            <button
+              className="flex items-center gap-2 px-4 py-2 text-sm bg-white/5 hover:bg-white/10 rounded-lg border border-white/10"
+              onClick={() => setSortOrder(sortOrder === 'latest' ? 'oldest' : 'latest')}
+            >
               <span className="material-icons text-sm">sort</span>
-              Sort: Latest
+              Sort: {sortOrder === 'latest' ? 'Latest' : 'Oldest'}
             </button>
           </div>
           <div className="flex items-center gap-3">
             <span className="text-xs text-slate-500">Bulk Actions:</span>
-            <select className="bg-white/5 border border-white/10 rounded-lg text-xs py-1.5 pl-3 pr-8">
-              <option>Select Action</option>
-              <option>Batch Publish</option>
-              <option>Batch Archive</option>
-              <option>Delete Selected</option>
+            <select
+              className="bg-white/5 border border-white/10 rounded-lg text-xs py-1.5 pl-3 pr-8"
+              onChange={e => handleBulkAction(e.target.value)}
+              value=""
+            >
+              <option value="">Select Action</option>
+              <option value="publish">Batch Publish</option>
+              <option value="archive">Batch Archive</option>
+              <option value="delete">Delete Selected</option>
             </select>
-            <button className="px-4 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 text-slate-900 hover:bg-primary hover:text-white transition-all">
-              Apply
-            </button>
           </div>
         </div>
-        <DataTable columns={columns} data={projects} />
+        <DataTable columns={columns} data={filteredProjects} />
       </div>
 
       <Modal
