@@ -56,6 +56,8 @@ const ProjectsPage: React.FC = () => {
   const [form, setForm] = useState<Project>(emptyForm);
   const [open, setOpen] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
 
   useEffect(() => {
     getProjects().then(setProjects).catch(() => setProjects([]));
@@ -79,17 +81,23 @@ const ProjectsPage: React.FC = () => {
   };
 
   const handleSave = async () => {
+    setSaving(true);
+    setSaveError(null);
     try {
       if (selected) {
         const updated = await updateProject(selected.id, form);
         setProjects((prev) => prev.map((item) => (item.id === updated.id ? updated : item)));
       } else {
-        const created = await createProject(form);
+        // Remove 'id' from payload for new project
+        const { id, ...createPayload } = form;
+        const created = await createProject(createPayload);
         setProjects((prev) => [created, ...prev]);
       }
       closeModal();
-    } catch (error) {
-      return;
+    } catch (error: any) {
+      setSaveError(error?.response?.data?.message || 'Failed to save project.');
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -233,12 +241,17 @@ const ProjectsPage: React.FC = () => {
               Review details before saving
             </span>
             <div className="flex items-center gap-4">
-              <Button variant="danger" onClick={closeModal}>Discard Changes</Button>
-              <Button onClick={handleSave}>Save Project</Button>
+              <Button variant="danger" onClick={closeModal} disabled={saving}>Discard Changes</Button>
+              <Button onClick={handleSave} disabled={saving}>
+                {saving ? 'Saving...' : 'Save Project'}
+              </Button>
             </div>
           </div>
         }
       >
+        {saveError && (
+          <div className="mb-4 text-xs text-red-500 font-semibold">{saveError}</div>
+        )}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="space-y-6">
             <div>
